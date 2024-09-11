@@ -1,35 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+
+import { useEffect, useRef } from 'react';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  window.console.log("C H O R O P L E T H . . .");
+
+
+  // DATA CONTAINERS
+  const usEducRef = useRef("");
+  const usCounRef = useRef("");
+
+
+  // Run request for US Education dataset when DOM is ready. Run only once.
+  useEffect(() => {
+    const request = new XMLHttpRequest();
+    const url = "https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json";
+    request.open("GET", url, true);
+    request.send();
+    request.onload = () => {
+      window.console.count("\nR E Q U E S T - 1    S U C C E S S F U L");
+      const json = JSON.parse(request.responseText);
+      // window.console.log("US Education Dataset:", json);
+      usEducRef.current = json;
+      window.console.log("US Education Dataset:", usEducRef.current);
+    };
+  }, []);
+  // Run request for US Education dataset when DOM is ready. Run only once.
+  useEffect(() => {
+    const request = new XMLHttpRequest();
+    const url = "https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json";
+    request.open("GET", url, true);
+    request.send();
+    request.onload = () => {
+      window.console.count("\nR E Q U E S T - 2    S U C C E S S F U L");
+      const json = JSON.parse(request.responseText);
+      usCounRef.current = json;
+      window.console.log("US Education Dataset:", usCounRef.current);
+    };
+  }, [])
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+      <header>
+        <h1 id="title"></h1>
+        <h2 id="description"></h2>
+      </header>
+      <main>
+        <div id="choropleth-box"></div>
+        <div id="legend-box"></div>
+        <div id="tooltip"></div>
+      </main>
+      <footer>
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+          This <a
+            href="https://github.com/ericraycodes/fcc-dv-choroplethmap-1.0/"
+            target="_blank"
+          >project</a> is made for freeCodeCamp certification purposes. Eric Ray Saladar. 2024.
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      </footer>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
